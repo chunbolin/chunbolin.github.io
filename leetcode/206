@@ -1,0 +1,71 @@
+# leetcode 206 反转链表
+
+## 题目
+给你单链表的头节点 <code>head</code> ，请你反转链表，并返回反转后的链表。
+
+<div class="original__bRMd"> 
+ <div> 
+  <p>&nbsp;</p> 
+ </div>
+</div>
+
+<p><strong>示例 1：</strong></p> 
+<img alt="" src="https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg" style="width: 542px; height: 222px;" /> 
+<pre>
+<strong>输入：</strong>head = [1,2,3,4,5]
+<strong>输出：</strong>[5,4,3,2,1]
+</pre>
+
+<p><strong>示例 2：</strong></p> 
+<img alt="" src="https://assets.leetcode.com/uploads/2021/02/19/rev1ex2.jpg" style="width: 182px; height: 222px;" /> 
+<pre>
+<strong>输入：</strong>head = [1,2]
+<strong>输出：</strong>[2,1]
+</pre>
+
+<p><strong>示例 3：</strong></p>
+
+<pre>
+<strong>输入：</strong>head = []
+<strong>输出：</strong>[]
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示：</strong></p>
+
+<ul> 
+ <li>链表中节点的数目范围是 <code>[0, 5000]</code></li> 
+ <li><code>-5000 &lt;= Node.val &lt;= 5000</code></li> 
+</ul>
+
+<p>&nbsp;</p>
+
+<p><strong>进阶：</strong>链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题？</p>
+
+<div><div>Related Topics</div><div><li>递归</li><li>链表</li></div></div><br><div><li>👍 3528</li><li>👎 0</li></div>
+
+## 思路
+这题也比较简单，反转的思路是这样，我们需要利用栈的特性来帮忙我们进行反转顺序的处理。因为我们直接遍历链表，比如链表为1->2->3，那我们遍历的顺序必然是1，2，3，但是由于我们需要反转链表，而此链表又是单向链表，因此我们希望是从后往前遍历链表，这个顺序不符合我们的要求；但是假如我们有栈的帮助，我们先把1，2，3依次放到栈里面，随后从栈里pop，自然就能得到3，2，1的遍历顺序了。
+
+此外，由于我们反转时需要有前一个节点，一遍我们把当前节点的next指向它，因此我们在递归或迭代中需要记录前一个节点。
+
+至于递归和迭代，其实本质是一样的，递归的栈不需要我们维护，是由编译器帮我们维护的；而迭代则需要我们去自己维护这个栈。下面的代码仅为递归版本。
+
+## 代码
+
+```java
+public ListNode helper(ListNode preNode, ListNode node) {
+    ListNode next = node.next;
+    node.next = preNode;
+    if (next != null) {
+        return helper(node, next);
+    }
+    return node;
+}
+public ListNode reverseList(ListNode head) {
+    if (head == null) return null;
+    return helper(null, head);
+}
+```
+
