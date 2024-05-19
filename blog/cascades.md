@@ -15,9 +15,39 @@ Volcano和Cascades都是自顶向下的方式，可以很好地剪枝；并且�
 前面也提到了，Cascades是个自顶向下的优化器框架。先来介绍下基本概念：
 
 1. 查询计划：一个树状结构，由一系列关系代数的算子组成
+
 2. 逻辑算子：表示一个逻辑的关系代数操作，如join，但不指定join的具体类型如hashjoin
+
 3. 物理算子：比如hashjoin、nestloopjoin等能够被具体执行的算子
+
 4. 逻辑计划：由逻辑算子组成的查询计划
+
 5. 物理计划：由物理算子组成的查询计划
-6. 表达式：即查询计划中的任意一个子树都可以认为是查询计划
-7. 
+
+6. expr：查询计划的任一子树都是表达式，在cascades这边大部分情况可以认为是一个算子
+
+7. rule：规则，规则可以分为两类：转换规则和实现规则，转换规则是逻辑到逻辑的转换，实现规则是逻辑到物理的转换，规则主要有下面几个成员组成：
+   1. pattern，即可以应用规则的表达式的结构
+   2. substitute，即应用该规则后生产的新的表达式
+   3. promise，表示该规则的优先级，promise越大，规则被应用的优先级就越高
+   
+8. Group：表示逻辑等价的表达式（表达式的输出记录的集合相同）的集合，例如对于A join B，其group中可能包含A join B，B join A， A hashjoin B，A nestLoopJoin B，B hashjoin A，B nestLoopJoin A等，并记录group中最优的表达式及其代价；
+
+9. mExpr：在表达式的基础上，将其输入抽象为group，这是cascades中很精妙的一点，由于将输入抽象成了group，该group的搜索始终会被记忆在memo中，从而避免重复搜索；
+
+10. memo：memo一般是个哈希表，记录搜索过程中产生的所有group，避免重复搜索
+    ![image-20240519211938751](C:\Users\olin6\AppData\Roaming\Typora\typora-user-images\image-20240519211938751.png)
+
+介绍完这些基本概念后，我们以一个具体的例子再来理解下：
+
+![image-20240519213412324](C:\Users\olin6\AppData\Roaming\Typora\typora-user-images\image-20240519213412324.png)![image-20240519213417890](C:\Users\olin6\AppData\Roaming\Typora\typora-user-images\image-20240519213417890.png)
+
+比如对于上面的这个输入给优化器的计划，一开始会为每一个算子都生成一个group，随后自顶向下进行探索：
+
+![image-20240519214745789](C:\Users\olin6\AppData\Roaming\Typora\typora-user-images\image-20240519214745789.png)
+
+几个讲解点，enforcer、剪枝、
+
+## 结果
+
+复杂查询性能提升17%
