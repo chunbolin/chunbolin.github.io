@@ -36,15 +36,15 @@ Volcano和Cascades都是自顶向下的方式，可以很好地剪枝；并且�
 9. mExpr：在表达式的基础上，将其输入抽象为group，这是cascades中很精妙的一点，由于将输入抽象成了group，该group的搜索始终会被记忆在memo中，从而避免重复搜索；
 
 10. memo：memo一般是个哈希表，记录搜索过程中产生的所有group，避免重复搜索
-    ![image-20240519211938751](C:\Users\olin6\AppData\Roaming\Typora\typora-user-images\image-20240519211938751.png)
+    ![image-20240519211938751](https://github.com/chunbolin/chunbolin.github.io/blob/master/blog/cascades_images/image-20240519211938751.png)
 
 介绍完这些基本概念后，我们以一个具体的例子再来理解下：
 
-![image-20240519213412324](C:\Users\olin6\AppData\Roaming\Typora\typora-user-images\image-20240519213412324.png)![image-20240519213417890](C:\Users\olin6\AppData\Roaming\Typora\typora-user-images\image-20240519213417890.png)
+![image-20240519213412324](https://github.com/chunbolin/chunbolin.github.io/blob/master/blog/cascades_images/image-20240519213412324.png)![image-20240519213417890](https://github.com/chunbolin/chunbolin.github.io/blob/master/blog/cascades_images/image-20240519213417890.png)
 
 比如对于上面的这个输入给优化器的计划，一开始会为每一个算子都生成一个group，随后自顶向下进行探索：
 
-![image-20240519214745789](C:\Users\olin6\AppData\Roaming\Typora\typora-user-images\image-20240519214745789.png)
+![image-20240519214745789](https://github.com/chunbolin/chunbolin.github.io/blob/master/blog/cascades_images/image-20240519214745789.png)
 
 几个讲解点，enforcer、剪枝、
 
